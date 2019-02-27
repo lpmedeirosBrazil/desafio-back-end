@@ -15,7 +15,6 @@ RUN apk add --update tzdata
 ENV TZ=America/Sao_Paulo
 
 RUN git clone https://github.com/rafegal/desafio-back-end.git
-RUN ls /desafio-back-end
 
 RUN pip install --upgrade pip
 RUN pip install -r /desafio-back-end/requirements
