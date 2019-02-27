@@ -25,4 +25,4 @@ def crawler_auto_esporte():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0', port='5000')
