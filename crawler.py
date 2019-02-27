@@ -22,16 +22,11 @@ def parse_description(description):
             content_description.append({'type': 'text', 'content': text})
     return content_description
 
-""" funcao responsavel por realizar crawler na revista auto esporte e retornar no formato json as informacoes"""
-def auto_esporte():
-    url = URL_AUTO_ESPORTE
-    response = requests.get(url)
-    xml_response = response.content if response.status_code == 200 else None
-
+""" funcao responsavel por realizar a quebra do xml e realizar a montagem do json"""
+def scrap_xml(xml_response):
     if xml_response:
         root = ET.fromstring(xml_response)
         feed = []
-
         for child in root.iter('item'):
             item = {}
             title = child.find('title').text
@@ -46,9 +41,18 @@ def auto_esporte():
         crawler_feed = {'feed':'error'}
     return crawler_feed
 
+""" funcao responsavel por realizar a requisicao e realizar a chamada das demais funções para montar o json da resposta"""
+def get_auto_esporte():
+    url = URL_AUTO_ESPORTE
+    response = requests.get(url)
+    xml_response = response.content if response.status_code == 200 else None
+    crawler_feed = scrap_xml(xml_response)
+    return crawler_feed
+
+
 """ descomente as linhas abaixos para testar e visualizar os dados retornados do crawler"""
 if __name__ == '__main__':
-    feed = auto_esporte()
+    feed = get_auto_esporte()
     import json
     print(json.dumps(feed, indent=4))
 

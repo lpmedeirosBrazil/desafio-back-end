@@ -2,7 +2,7 @@ __author__ = 'galleani'
 
 from flask import Flask, jsonify
 from flask_httpauth import HTTPBasicAuth
-from crawler import auto_esporte
+from crawler import get_auto_esporte
 
 app = Flask(__name__)
 auth = HTTPBasicAuth()
@@ -20,7 +20,7 @@ def get_password(username):
 @app.route('/api/v1/crawler/autoesporte', methods=['GET'])
 @auth.login_required
 def crawler_auto_esporte():
-    response = auto_esporte()
+    response = get_auto_esporte()
     return jsonify(response)
 
 
