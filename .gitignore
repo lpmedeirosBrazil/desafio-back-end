@@ -12,3 +12,4 @@ develop-eggs
 venv
 *.pyc
 build
+.idea
