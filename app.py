@@ -1,15 +1,13 @@
+__author__ = 'galleani'
+
 from flask import Flask, jsonify
 from flask_httpauth import HTTPBasicAuth
+from crawler import auto_esporte
 
 app = Flask(__name__)
 auth = HTTPBasicAuth()
 
-from desafio_oglobo import crawler
-
-users = {
-    "galleani": "123",
-    "rafael": "123"
-}
+users = dict(galleani='123', rafael='123', teste='teste')
 
 
 @auth.get_password
@@ -18,18 +16,13 @@ def get_password(username):
         return users.get(username)
     return None
 
-@app.route('/')
-@auth.login_required
-def index():
-    return "Hello, %s!" % auth.username()
 
-
-@app.route('/globo', methods=['GET'])
+@app.route('/api/v1/crawler/autoesporte', methods=['GET'])
 @auth.login_required
-def hello_world():
-    response = crawler()
+def crawler_auto_esporte():
+    response = auto_esporte()
     return jsonify(response)
 
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port="8000")
+    app.run()
