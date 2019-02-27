@@ -10,22 +10,16 @@ from bs4 import BeautifulSoup
 
 """ funcao responsavel por realizar a quebra das tags html da descricao da revista auto esporte"""
 def parse_description(description):
-    links = []
     content_description = []
-
     soup = BeautifulSoup(description, 'html.parser')
-    for link in soup.find_all('a'):
-        links.append(link.get('href'))
+    links = [link.get('href') for link in soup.find_all('a')]
     content_description.append({'type': 'links', 'content': links})
-
-    for img in soup.find_all('img'):
-        content_description.append({'type': 'image', 'content': img.get('src')})
+    content_description.append([{'type': 'image', 'content': link.get('src')} for link in soup.find_all('img')])
 
     for p in soup.find_all('p'):
         text = p.text.replace('\n', '').replace('\t', '')
         if len(text) > 1:
             content_description.append({'type': 'text', 'content': text})
-
     return content_description
 
 """ funcao responsavel por realizar crawler na revista auto esporte e retornar no formato json as informacoes"""
@@ -53,8 +47,8 @@ def auto_esporte():
     return crawler_feed
 
 """ descomente as linhas abaixos para testar e visualizar os dados retornados do crawler"""
-# if __name__ == '__main__':
-#     feed = auto_esporte()
-#     import json
-#     print(json.dumps(feed, indent=4))
+if __name__ == '__main__':
+    feed = auto_esporte()
+    import json
+    print(json.dumps(feed, indent=4))
 
